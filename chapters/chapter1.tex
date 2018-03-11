@@ -15,22 +15,21 @@ Robots to be able to integrate in such an environment, and more importantly for 
 
 \section{Aim}
 
-The aim of the project is to explore key-topics and main-ideas for human-aware navigation and human-robot interaction with the final goal of developing a software product able to make the robot detect human presence in a dynamic environment and give it the ability to join ongoing discussions maintaining critical spaces.
+The aim of the project is to explore key-topics and main-ideas for human-aware navigation and human-robot interaction with the final goal of developing a ROS package software product able to estimate human position in a dynamic and non-sparse environment through and ensemble approach of various algorithms and techniques, in order to facilitate robotics human awareness.
 
 \section{Domain}
 
-One of the first problems to be tackled in the project, is the ability of the robot to detect human presence within the environment. The detection outcome has to be accurate and resistant to noise as to avoid false positives or false negatives during the detection. 
-
-The next step would require the robot to define a behavioral space model for the people detected, which is used to respect the discussion's area.
+The problems to be tackled for the accomplishment of the goal are many, including being able to detect human presence with good real-time performance and accuracy in spaces where the robot will not have a clear view of the person or when the person is not clearly standing in front of the camera, therefore avoiding to have as many false positives or false negatives instances as possible. Moreover, the final system has to be able to estimate the position of the person or people in the space, therefore adding depth and out of sensory range challenges which will need to dealt with.
 
 \section{Objectives}
 
 The following objectives for the project are defined:
 
 \begin{enumerate}
-  \item Explore, understand and gain experience with state-of-the-art robotics' algorithms for vision and navigation tasks.
-  \item Obtain a level of proficiency in using the ROS platform and its tools.  
-  \item Develop a human detection system using the robot's built-in sensors and cameras.
-  \item Develop a human space model for human aware navigation.
-  \item Develop a navigation system able to navigate in dynamic environments and act upon precise inputs.
+  \item Explore with common and state-of-the-art computer vision algorithms for object detection tasks, focusing principally on human detection.
+  \item Obtain a level of proficiency in using the ROS platform and its tools.
+  \item Develop a human detection module using the robot's built-in RGB sensor.
+  \item Develop a leg detection module for person pose estimation and long distance detection using the robot's built-in laser-scan.
+  \item Develop a depth estimation module to estimate robot-detections distance using the robot's built-in RGB and RGB-D sensor or other computer vision techniques.
+  \item Integrate the developed modules and create a ROS package able to estimate the position of the detected persons in the map, offering RVIZ marker visualisation of the detections in the map as well as custom detection messages with information about the detections, such as position in the map, confidence of the detection, bounding box centre, etc.
 \end{enumerate}
