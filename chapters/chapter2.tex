@@ -230,12 +230,93 @@ Both parameters reduce the computational cost quadratically.
 
 To be able to estimate the position of a person in the final ROS package the only RGB detection is not enough. The distance from the robot to the person is required.
 
-Two main possible approaches have been identified to solve the problem. The first one consists using the RGB-D sensor which comes integrated on TIAGo and which has been presented in Chapter1. The second viable approach consists in Triangulation, a common vision technique to obtain depth from two or more viewpoints.
+Two main possible approaches have been identified to solve the problem. The first one consists using the RGB-D sensor which comes integrated on TIAGo and which has been presented in Chapter1. The second viable approach consists in using Triangulation, a common vision technique to obtain depth from two or more viewpoints.
 
 \subsection{RGB-D}
 
+The RGB-D camera integrated in TIAGo offers a variety of topics from which valuable sensory data can be retrieved. For the scope of this solution the depth map and the point cloud are the data which we are most interested to, as these respectively offer the distance in millimiters for every RGB pixel and the merge of the RGB and depth data.
 
+Therefore, by leveraging the existing knowledge of where the bounding box depicting the position of humans in the two dimensional RGB array a ROI (Region Of Interest) mapping can be applied, where we try to map the pixels in the RGB where we know a person is present to the corresponding depth pixels.
 
 \subsection{Triangulation}
 
+The problem consists in finding the position of a point in space given its position in two images taken with cameras with know calibration and pose \cite{hartley1997triangulation}. The process requires to find the interesection of the two known rays in space which is trivial when noise is absent, however this is most likely not the case and consequently the rays might never interesect \cite{hartley1997triangulation}. Therefore, it is necessary to find the best possible point \cite{hartley1997triangulation} making of this problem an optimisation one.
+
+The paper presents a solution to the presented problem by assuming a Gaussian noise model for perturbation of the image coordinates, and by formulating it as a least-squares minimisation problem.
+
+\subsubsection{Formulation}
+
+Supposing a point x is present in at least two images and that the two camera matrices P and P' (which define the extrinsic and intrinsic camera information) are known, we identify u and u' to be the projection of such point x in the two images \cite{hartley1997triangulation} and whose intersection is our target.
+
+A commonly suggested method is to choose the midpoint of the common perpendicular to the two rays \cite{hartley1997triangulation}, however such method would not give an optimal result due to the various approximations made \cite{hartley1997triangulation}. Hence a new formulation is made that relies on the concepts of epipolar correspondence and the fundamental matrix \cite{hartley1997triangulation}. The algorithm presented, moreover, is claimed to be moderate in computation requirements due to ist noniterative nature and calculus based approach \cite{hartley1997triangulation}.
+
+\subsubsection{Minimisation Criterion}
+
+The algorithm sets some criteria with regards to the good result of the triangulation process. These are the following:
+
+\begin{enumerate}
+  \item The camera matrices and the fundamental matrix are known
+  \item The projection points satisfy the fundamental matrix constraint
+  \item The image features noise model is a Gaussian
+\end{enumerate}
+
+Upon these assumptions the projection points u and u' that are seeked are the ones that minimises the following function \cite{hartley1997triangulation}:
+
+d(u, u')**2 + d(u', u)**2,
+
+where d(*, *) represents the Euclidean distance subject to the epipolar constraint \cite{hartley1997triangulation}:
+
+u'Fu = 0
+
 \section{Leg Detection}
+
+The previously presented literature would surely be enough for a basic human pose estimation, however, this is the case where noise is at its minimum and sensory data are as precise as they can, which is most likely never the case even when using highend hardware. In fact, TIAGo's RGB-D sensor is limited to only an 8m range, hence depth estimation outside the range or even close to the range can be not possible or really noisy.
+
+Therefore the decision to integrate the RGB detection and the RGB-D distance mapping with a leg detector that makes use of 25m range laser-range finder available on TIAGo and supervised learning models to distnguish people's leg in the environment for a more robust pose estimation.
+
+\subsection{Introduction}
+
+Laser range data contain little to no information about people in the environment, as they typically consist of two-dimensional range information \cite{arras2007using}.
+
+\begin{figure}[!htbp]
+\begin{center}
+\includegraphics[width=7cm,height=9cm,keepaspectratio]{images/laser-data.png}
+\end{center}
+\caption{Laser scan data in a typical office (Image taken from: \cite{arras2007using}.}
+\end{figure}
+
+The figure above shows the laser scan data returned in a typical office environment. Distinguishing between people's legs and the actual office's objects would be a difficult task for both humans and robots. However, range measurements corresponding to human legs do have certain characteristics, such as size, circularity and convexity \cite{arras2007using}.
+
+The method proposed in the paper aims at defining such set of meaningful scalar features that quantify these properties which can then be detected using an AdaBoost supervised learning approach.
+
+\subsubsection{Boosting}
+
+Boosting is a general method for creating an accurate classifier by combining a set of weak classifiers \cite{arras2007using}. More precisely, the input to the AdaBoost algorithm used is a set of labeled training data, where each instance is assigned to a weak classifier using a weight distribution over the input \cite{arras2007using}, which ultimately will have a small classification error corrected iteratively by modifying the weight distribution of the examples which were incorrectly classified \cite{arras2007using}. The final strong classifier will be a weighted majority vote of the T best weak classifiers \cite{arras2007using}. In general, we can assume large weights for good weak classifiers and small ones for the poorest \cite{arras2007using}.
+
+\subsubsection{Features}
+
+The segmentation process is purely done by the robot's hardware in this case. In fact, the returned observations will consist of a set of beams, each one of which is to a tuple containing the angle of the beam relative to the robot and the length of the beam \cite{arras2007using}. Furthermore, the set of beams returned is split on smaller subsets grouped together based on a distance metric such that two adjacent beams are father away than a threshold distance, a new subset is initialised, so that can the segmentations can be readily processed by the subsequent learning step \cite{arras2007using}.
+
+The AdaBoosting algorithm uses 14 different features for the binary classification, where each feature f is defined as a function f:S -> R that takes a segment as an argument and returns a real values \cite{arras2007using}. Below is caption of a laser segment with its feature profile:
+
+\begin{figure}[!htbp]
+\begin{center}
+\includegraphics[width=7cm,height=9cm,keepaspectratio]{images/segment_profile.png}
+\end{center}
+\caption{Segment profile (Image taken from: \cite{arras2007using}.}
+\end{figure}
+
+\subsubsection{Results}
+
+Experimentations with the outlined algorithm were presented in the paper with some excellent results in various cluttered environments like offices and corridors can be, obtaining an encouraging detection rate of over 90\% \cite{arras2007using}.
+
+\begin{figure}[!htbp]
+\begin{center}
+\includegraphics[width=7cm,height=9cm,keepaspectratio]{images/leg_cfm.png}
+\end{center}
+\caption{Confusion Matrices in office and corridor environments (Image taken from: \cite{arras2007using}.}
+\end{figure}
+
+
+
+
