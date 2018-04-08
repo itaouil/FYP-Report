@@ -1,9 +1,18 @@
 \chapter{Implementation}
 \label{chapter3}
 
-\section{Detection Module}
+\section{Human detection}
 
-The Histogram of Oriented Gradients (HoG) and its variances such as the Oriented Histograms of Flow and Appearance (OHFA) and the AdaBoosted versions were the first choices for the task, nonetheless the result obtained held a low accuracy in the detections with a lot of false positive and high latency during the real-time usage.
+For the human detection module a couple of different approaches were presented in Chapter2. These were the HoG method and a deep learning based approach, both making use of the RGB data incoming from the on-board sensor.
+
+The Histogram of Oriented Gradients (HoG) and its possible variances such as the Oriented Histograms of Flow and Appearance (OHFA) and the AdaBoosted version was the first choice for the task, for its simplicity in the implementation as the method was already present in the OpenCV library. However, the algorithm's performance were acceptable only in perfect conditions due to the mechanics of the former, mainly when people are standing in up-right positions in sparse environments and with good lighting conditions, without allowing any probabilistic result for the detection outputs such to disregard low confidence ones, thereby restricting the range of usability of the method. Moreover, the sliding window technique used by HoG is rather inefficient as it has to search through the whole frame, making it computationally expensive for large frames.
+
+On the other hand the deep learning network proved to work really well under circumstances where the HoG failed, such as when people are sat or not exactly standing, when they are facing with their back and with partial body occlusion or when only a section of the body is visible (such as the only the waist, only the abdomen, etc). Moreover, due to the nature of the algorithm, each detection is accompanied with its probability of the frame's region to be a person, therefore allowing to discard detections with a low probability, something that was not possible if HoG was used.
+
+Hence the deep learning approach is the one chosen for the final implementation of the detection module.
+
+\subsection{Development}
+
 
 \section{Depth Module}
 \section{Leg Detection Module}
