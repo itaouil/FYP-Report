@@ -11,8 +11,302 @@ On the other hand the deep learning network proved to work really well under cir
 
 Hence the deep learning approach is the one chosen for the final implementation of the detection module.
 
-\subsection{Development}
+\subsection{Stack choice}
+
+For the development of the detection module Python programming language and the OpenCV library have been used.
+
+The choice to use Python derives from the nature of the project. In fact being it an \textbf{Exploratory Software} product there has been a lot of prototyping phases before settling for a particular approach, making of Python a natural choice for the development phase for its dynamic behaviour and its ease of implementation. Moreover, both the ROS interfaces as well as the OpenCV library used offered Python bindings to call their relative APIs.
+
+Version 3 of the Python programming language has been used along with OpenCV 2.4.8 and 3.4.0 to relatively access Indigo's interfaced \textbf{CvBridge} modules and the \textbf{deep-neural-network (dnn)} module to work with the serialised SSD network.
+
+The need for two different versions of OpenCV comes from the fact that the ROS indigo version used comes with de-facto static bindings for version 2.4.8  of OpenCV and without allowing an easy way to install the latest version of OpenCV (required for the dnn module) compatible with Indigo's CvBridge module, without upgrading to a later version of ROS, which wasn't an option given the need for the Indigo version for compatibility with TIAGo and for the impossibility to deal with source installation and already present stating linkages due to time constraints, a virtual environment has been used to solve the issue.
+
+\subsubsection{Virtual Environment}
+
+A virtual environment is a cooperatively isolated runtime environment that allows Python users and applications to install and upgrade Python distribution packages without interfering with the behaviour of other Python applications running on the same system \cite{website:virtualEnv}.
+
+To following are the instructions to create a virtual environment, in this case called \textbf{harn}:
+
+\begin{enumerate}
+  \item Install and upgrade pip
+  	\begin{lstlisting}[language=bash]
+    	$ sudo apt-get install python-pip && pip install --upgrade pip
+	\end{lstlisting}
+  \item Install virtual environment and virtual wrapper
+  	\begin{lstlisting}[language=bash]
+    	$ sudo pip install virtualenv virtualenvwrapper
+	\end{lstlisting}
+  \item Clear cache
+  	\begin{lstlisting}[language=bash]
+    	$ sudo rm -rf ~/.cache/pip
+	\end{lstlisting}
+  \item Create virtual environment called harn (with Python3 bindings)
+  	\begin{lstlisting}[language=bash]
+    	$ mkvirtualenv harn -p python3
+	\end{lstlisting}
+  \item Export virtual environment by adding the following line to .bashrc
+  	\begin{lstlisting}[language=bash]
+    	export WORKON_HOME=$HOME/.virtualenvs
+	\end{lstlisting}
+  \item Source .bashrc to activate changes
+  	\begin{lstlisting}[language=bash]
+    	$ source ~/.bashrc
+	\end{lstlisting}
+\end{enumerate}
+
+Once the environment is set up, installing the latest OpenCV version is as easy as this:
+
+\begin{enumerate}
+  \item Activate environment
+  	\begin{lstlisting}[language=bash]
+    	$ workon harn
+	\end{lstlisting}
+  \item Install latest OpenCV version
+  	\begin{lstlisting}[language=bash]
+    	(harn) $ pip install opencv-contrib-python
+	\end{lstlisting}
+\end{enumerate}
+
+And to deactivate it, the following command is run on the same terminal:
+
+\begin{lstlisting}[language=bash]
+	$ deactivate
+\end{lstlisting}
+
+Whenever the human detection module needs to be run, this has to happen on the activated environment were the dnn module is made available by the updated OpenCV version.
+
+\subsection{Module design}
+
+The final solution design was affected by the Indigo-OpenCV compatibility issue introduced in the subsection before. In fact, the detection module is not able to convert beforehand the RGB data incoming from the subscription into an OpenCV format, such as MAT, using the available CvBridge routine for reasons presented before.
+
+Therefore the module has been broken into two separate classes, each one working as a separate module while performing synchronised complementary tasks by using ROS services. One module performs the required RosMsg to MAT conversion using OpenCV 2.4.8 through the CvBridge routines, while the other module performs the detection process on the converted and stored image. 
+
+\subsubsection{OpenCV conversion}
+
+The conversion module is implemented as a collection of routines in the \textbf{cv\_conversion.py} file made available on GitHub. The steps to the conversion process are the following:
+
+\begin{enumerate}
+  \item Subscribe to the image topic and callback processing
+  \item Convert the ROS image into an OpenCV format
+  \item Store the converted MAT image in a data folder
+\end{enumerate}
+
+\subsubsection{Image subscription \& callback}
+
+To subscribe to the image topic the \textbf{Subscriber} routine made available on Python via the \textbf{rospy} library was used, which takes three arguments, the first one being the topic string where the raw RGB data are published by the system being used, the second argument is type of message being received through the subscription where in this occasion is an Image type of data. The third and last argument is the callback function called upon data receival. The routine call is placed in the main function that initialises the node itself and looks like the following:
+
+\begin{lstlisting}
+def main(args):
+
+    # Initialise node
+    rospy.init_node('cv_conversion', anonymous=True)
+
+    try:
+        # Image subscription
+        rospy.Subscriber("/xtion/rgb/image_raw", Image, toMat)
+
+        # Keep thread spinning!
+        rospy.spin()
+
+    except KeyboardInterrupt as e:
+        print('Error during main execution' + e)
+\end{lstlisting}
+
+\subsubsection{Image msg to MAT}
+
+Once the data is received by the subscription method it is passed to the callback function (\textbf{toMat}) as an argument, thereby used convert the raw content into the OpenCV MAT format required by the neural network for the detection process. The conversion process is carried using the \textbf{imgmsg\_to\_cv2} routine available through the \textbf{CvBridge} module, which takes as argument the ROS message to be converted and the encoding to convert it into, in this case a bgr8. The code is as follows:
+
+\begin{lstlisting}
+def toMAT(rgb_image):
+    """
+        Converts raw RGB image
+        into OpenCV's MAT format.
+        Arguments:
+            sensor_msgs/Image: RGB raw image
+        Returns:
+            MAT: OpenCV BGR8 MAT format
+    """
+    try:
+        cv_image = CvBridge().imgmsg_to_cv2(rgb_image, 'bgr8')
+        return cv_image
+
+    except Exception as CvBridgeError:
+        print('Error during image conversion: ', CvBridgeError)
+\end{lstlisting}
+
+\subsubsection{Storage}
+
+Lastly, the \textbf{cv\_image} is stored in the data folder created locally under a converted subdirectory using a dynamic path, hence avoid unresolved path issues in case the project is cloned in the future in a different path or folder by other users. The code is as follows:
+
+\begin{lstlisting}
+def store(cv_image):
+    """
+        Stores the converted raw image from
+        the subscription and writes it to
+        memory.
+        Arguments:
+            MAT: OpenCV formatted image
+    """
+    cv2.imwrite(PATH + "/data/converted/image.png", cv_image)
+\end{lstlisting}
+
+where \textbf{PATH} is defined as follows:
+
+\begin{lstlisting}
+# Constant path
+PATH = str(Path(os.path.dirname(os.path.abspath(__file__))).parents[0])
+\end{lstlisting}
+
+\subsubsection{OpenCV Detection}
+
+The detection module, differently from the conversion one is implemented as a Class, called PersonDetection in the \textbf{human\_detection.py} file made available on GitHub. The steps to the detection process are the following:
+
+\begin{enumerate}
+  \item Load neural network
+  \item Load the converted image
+  \item Run feed-forward detection
+  \item Publish detections
+\end{enumerate}
+
+\subsubsection{Load the neural network}
+
+The detection module used a Caffe pre-trained neural network consisting of a \textbf{.caffemodel} and a \textbf{prototxt} files which define the serialised network, hence a loading process is required.
+
+The dnn module, introduced in version 3.3 of OpenCV, is what is required to load the serialised caffe model. Morever, the routine can be used to work with a variety of other Machine Learning frameworks, including Tensorflow and Keras.
+
+The de-serilisation happens in the Class constructor, such to avoid loading over and over the network for every detection request, using the \textbf{readNetFromCaffe} routine belonging to the dnn namespace which takes as arguments the \textbf{prototxt} file containing the network's architecture information, such as the input dimensions, the number of layers, the base network and so on, while the second argument is the \textbf{.caffemodel} file which contains the weights of the network. Moreover, the targets of the network, the target's bounding box's colours, the confidence threshold for valid detections and the topics' related message publisher and custom message area also defined in the constructor:
+
+\begin{lstlisting}
+def __init__(self):
+	"""
+    	Constructor.
+   """
+   # Detection target ID (person)
+   self.target = 15
+
+   # Minimum confidence for acceptable detections
+   self.confidence = 0.5
+
+   # Publishing rate
+   self.rate = rospy.Rate(10)
+
+   # Number of detections
+   self.number_of_detections = 0
+
+   # Detection messages
+   self.detections = Detections()
+
+   # Constant path
+   self.path = str(Path(os.path.dirname(os.path.abspath(__file__))).parents[0])
+
+   # Define detection's target/s
+   self.targets = ["background", "aeroplane", "bicycle", "bird", "boat",
+                   "bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
+                   "dog", "horse", "motorbike", "person", "pottedplant", "sheep",
+                   "sofa", "train", "tvmonitor"]
+
+   # Bounding boxes self.colours
+   self.colours = np.random.uniform(0, 255, size=(len(self.targets), 3))
+
+   # Load the neural network serialised model
+   self.net = cv2.dnn.readNetFromCaffe(self.path +
+                                      "/data/nn_params/MobileNetSSD_deploy.prototxt.txt",
+                                      self.path +
+                                      "/data/nn_params/MobileNetSSD_deploy.caffemodel")
+
+   # Distance (human-robot distance) and detection publishers
+   self.detection_pub = rospy.Publisher('detections', Detections, queue_size=5)
+
+   print("[INFO] Successful DNN Initialisation")
+\end{lstlisting}
+
+\subsubsection{Load converted image}
+
+Before being able to run the detection algorithm made available by the de-serialisation process presented in the previous step, the previously MAT format converted image needs to be loaded. The loading procedure is straightforward and as easy as calling one OpenCV routine as follows:
+
+\begin{lstlisting}
+def load_img(self):
+    """
+    	Load image to be processed.
+
+        Returns:
+        	image: MAT image
+    """
+    return cv2.imread(self.path + "/data/converted/image.png")
+\end{lstlisting}
+
+\subsubsection{Feed-forward}
+
+The feed-forward step consists in feeding the MAT image to the neural network, which runs the detection process on it. Input wise, the network accepts any type of image (Monochrome, RGB) as long as its dimensions are 300x300 pixels meaning that the original input image has to undertake a pre-processing step to scale it down to the required size.
+
+The rest of the detection process is straightforward per se using the dnn module, as what is left to do is a matter of setting up the input for the network using the \textbf{setInput} dnn routine and actually running feed-forward with the \textbf{forward} routine.
+
+Given that the network is trained to recognise a dozen of different objects, a conditional statement is added to the thresholding condition checking for a high enough detection probability that makes sure person labeled detections are actually drawn onto the frame and consequently published.
+
+The remaining parts of the code shown below are just to draw bounding box around the possible detections:
+
+\begin{lstlisting}
+def detection(self, req):
+	"""
+    Returns the frame with
+    detections bounding boxes.
+
+    Params:
+    	sensor_msgs/Image: Depth image syncd with RGB
+
+    Ouput:
+    	int: Result of the service
+	"""
+    print("[INFO] Loading Image...")
+    frame = self.load_img()
+
+    # Blob conversion (detecion purposes)
+    (h, w) = frame.shape[:2]
+    blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)), 0.007843, (300, 300), 127.5)
+
+    # Run feed-forward (crates detection array)
+    print("[INFO] Detection...")
+    self.net.setInput(blob)
+    detections = self.net.forward()
+
+    # Loop over the detections
+    for i in np.arange(0, detections.shape[2]):
+    	# Get detection probability
+        confidence = detections[0, 0, i, 2]
+
+        # Get ID of the detection object
+        idx = int(detections[0, 0, i, 1])
+
+        # Filter out non-human detection with low confidence
+        if confidence > self.confidence and idx == self.target:
+        	# `detections`, then compute the (x, y)-coordinates of
+            # the bounding box for the object
+            box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+            (startX, startY, endX, endY) = box.astype("int")
+
+            # Rectangle keypoints
+            top_left = (startX, startY)
+            bottom_right = (endX, endY)
+
+            # draw bounding box
+            label = "{}: {:.2f}%".format(self.targets[idx], confidence * 100)
+            roi = cv2.rectangle(frame, top_left, bottom_right, self.colours[idx], 2)
+            y = startY - 15 if startY - 15 > 15 else startY + 15
+            cv2.putText(frame, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.colours[idx], 2)
+
+            # Get centre point of the rectangle and draw it
+            centre_point = self.getCentre(top_left, bottom_right)
+            cv2.circle(frame, centre_point, 4, (0,0,255), -1)
+
+	# Save frame
+    self.store(frame)
+
+    return frame
+\end{lstlisting}
+
+\textbf{Publish detections \& Custom messages}
 
 
-\section{Depth Module}
-\section{Leg Detection Module}
+
+\section{Pose Estimation}
+\section{Leg Detection Integration}
