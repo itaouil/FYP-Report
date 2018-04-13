@@ -122,11 +122,11 @@ In particular three main models have been identified, able to perform object det
 
 However, given the subtle difference in the classification accuracy of the aforementioned neural networks, the SSD model has been chosen out of the three for its computational efficiency and therefore its speed of detection as well as its ease to be embedded in a system. Moreover, the mobileNet version of the model will be used for its optimisation behaviour on power constrained devices.
 
-\subsection{SSD Overview}
+\subsubsection{SSD Overview}
 
 The SSD model is a single deep neural network able to detect various objects in a scene, by discretizing the output space with bounding boxes over different aspect ratios and scales per feature map (i.e. activation layer) \cite{paper:SSD}. During the feed-forward prediction process scores are generated for the presence of each object category in each bounding box along with an adjustment to the bounding boxes' to better match the object shape \cite{paper:SSD}. The network also combines various feature maps predictions with different resolutions to handle objects of various sizes. Moreover, the network classification process is simpler than other state-of-the-art models such as Faster R-CNN, as the former does not require proposal regions and subsequent pixel resampling stages, thereby encapsulating all required computations in a single network making of the SSD easy to train and straightforward to integrate into systems that require a detection component \cite{paper:SSD}, which is exactly our case.
 
-\subsection{SSD Architecture}
+\subsubsection{SSD Architecture}
 
 Current state-of-the-art object detection systems are variances of the same detection process, which includes the following steps \cite{paper:SSD}:
 
@@ -174,7 +174,7 @@ A set of default bounding boxes is associated for each feature map cell, for mul
 \label{fig:ssdGT}
 \end{figure}
 
-\subsection{MobileNets}
+\subsubsection{MobileNets}
 
 MobileNet provides an efficient network architecture in order to build small and low latency models that can be easily embedded in vision applications running on limited devices \cite{paper:MobileNets}. In fact, although the SSD model is relatively computationally lightweight compared to other state-of-the-art models it is still not enough to carry real-time detections on computationally limited platforms.
 
@@ -196,7 +196,7 @@ Each component in the network is followed by a batch-normalization and a rectifi
 \caption{Standard convolutional (left), Depthwise Separable convolutions (right) (Image taken from: \cite{paper:MobileNets}).}
 \end{figure}
 
-\subsection{Depthwise Separable Convolution}
+\subsubsection{Depthwise Separable Convolution}
 
 The depthwise separable convolutions is a factorized convolution which factorizes a standard convolution into a depthwise convolution and a 1x1 convolution called pointwise convolution \cite{paper:MobileNets}.
 
@@ -209,7 +209,7 @@ The main difference between a usual convolution and the depthwise one is that th
 \caption{Convolution transformation (Image taken from: \cite{paper:MobileNets}).}
 \end{figure}
 
-\subsection{Width and Resolution Multipliers}
+\subsubsection{Width and Resolution Multipliers}
 
 The basic mobileNet architecture already offers a better efficiency by being smaller and with a lower latency than the usual networks. Nonetheless, many times specif applications require a model which is even smaller and less computationally expensive. The width and resolution hyper-parameters serve exactly this.
 
@@ -244,13 +244,13 @@ The problem consists in finding the position of a point in space given its posit
 
 The paper presents a solution to the presented problem by assuming a Gaussian noise model for perturbation of the image coordinates, and by formulating it as a least-squares minimisation problem.
 
-\subsection{Formulation}
+\subsubsection{Formulation}
 
 Supposing a point x is present in at least two images and that the two camera matrices P and P' (which define the extrinsic and intrinsic camera information) are known, we identify u and u' to be the projection of such point x in the two images \cite{hartley1997triangulation} and whose intersection is our target.
 
 A commonly suggested method is to choose the midpoint of the common perpendicular to the two rays \cite{hartley1997triangulation}, however such method would not give an optimal result due to the various approximations made \cite{hartley1997triangulation}. Hence a new formulation is made that relies on the concepts of epipolar correspondence and the fundamental matrix \cite{hartley1997triangulation}. The algorithm presented, moreover, is claimed to be moderate in computation requirements due to ist noniterative nature and calculus based approach \cite{hartley1997triangulation}.
 
-\subsection{Minimisation Criterion}
+\subsubsection{Minimisation Criterion}
 
 The algorithm sets some criteria with regards to the good result of the triangulation process. These are the following:
 

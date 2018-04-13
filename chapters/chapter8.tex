@@ -1,0 +1,50 @@
+\chapter{Planning \& Project Management}
+\label{chapter8}
+
+In this chapter the planning and project management techniques used throughout the project in order to mitigate the inherent risk of the experimentation, given the nature of the project, are discussed, with a focus on how the project was broke down into its phases, the source version control and other project management techniques.
+
+The Gantt chart with the project's weekly breakdowns is available in Appendix D.
+
+\section{Change of aim}
+
+The nature of the project and its experimentation approach, the intermediate report feedback received by Dr. Mehmet Dogar, the project's assessor, were such that the original aim of the project was changed in agreement with Dr. Matteo Leonetti, the project's supervisor, so as not to incorporate the original human-robot behavioural aspect that should have seen the robot not only detect the human pose in the environment, but join these whenever there was on-going discussion. However, as the change happened at a relatively early development stage, and the previous background research done was still relative to the re-shaped project not much re-planning was necessary for the ultimate fulfillment of the task.
+
+\section{Planning}
+
+The project development followed an agile methodology, where four main phases were identified for a successful accomplishment.
+
+The first phase consisted in developing the human detection piece which was the essential part of the project, as without a correct and precise recognition the remaining modules would serve nothing.
+
+The second phase consisted in obtaining a correct and precise human-robot distance, which would allow a correct pose estimation later on.
+
+The third phase was about finding the 3D world position of the detection in the world, where by world in this case is meant the map of the environment.
+
+The last and fourth module wasn't really development, but rather integration, as an off-the-shelf ROS package is used to give the user a possible esteem for detections outside of the 8 metres RGB-D range.
+
+\section{GitHub}
+
+The project's code is hosted entirely on GitHub as a public repository\footnote{ \url{https://github.com/itaouil/HARN}}, which makes it easily accessible to everyone who wants to contribute to it. Moreover, GitHub offers other project management techniques that have been used throughout the development and which are presented below.
+
+\subsection{Branching}
+
+Git branching was an important aspect of the development, in order to separate the different modules implementation and the major features within these. This enabled a safer experimenting process where already working features in the master branch were not affected by the on-going development of others. 
+
+Moreover, the approach taken in the development consisted of merging to master after every feature completion, followed by the deletion of the latter's local and remote branch, hence, none of the development branches are available on GitHub anymore, nonetheless, 5 branches have been used during the implementation part of the project for the following features:
+
+\begin{itemize}
+  \item Person detection module
+  \item OpenCV conversion module
+  \item RGB to Depth mapping
+  \item Depth to 3D pose
+  \item Leg detection integration
+\end{itemize}
+
+\subsection{Milestones \& Issues}
+
+GitHub issues have been used to keep track of uncompleted tasks as well as bugs encountered during the development phase. The standard GitHub issues labels have used to indicate the nature of the issue. Moreover, two Milestones have been identified, one for the marked presentation given before the easter break and one for the final submission deadline. Issues have been assigned accordingly to their respective Milestone.
+
+\subsection{License}
+
+As previously stated the ROS package developed will be made available to the open-source ROS community for them to use and improve. Hence the need to make the repository publicly available, thereby granting permission to everyone to use and modify the software, with the final aim of bringing further improvements to it.
+
+Therefore the repository, source code and all contents to it has been licensed under the “GNU General Public License v3.0”.

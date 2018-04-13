@@ -1,7 +1,7 @@
-\chapter{Implementation}
+\chapter{Person Detection Development}
 \label{chapter3}
 
-\section{Human detection}
+\section{Deep Learning Approach}
 
 For the human detection module a couple of different approaches were presented in Chapter2. These were the HoG method and a deep learning based approach, both making use of the RGB data incoming from the on-board sensor.
 
@@ -11,7 +11,7 @@ On the other hand the deep learning network proved to work really well under cir
 
 Hence the deep learning approach is the one chosen for the final implementation of the detection module.
 
-\subsection{Stack choice}
+\subsection{Stack}
 
 For the development of the detection module Python programming language and the OpenCV library have been used.
 
@@ -81,7 +81,7 @@ The final solution design was affected by the Indigo-OpenCV compatibility issue 
 
 Therefore the module has been broken into two separate classes, each one working as a separate module while performing synchronised complementary tasks by using ROS services. One module performs the required RosMsg to MAT conversion using OpenCV 2.4.8 through the CvBridge routines, while the other module performs the detection process on the converted and stored image. 
 
-\subsubsection{OpenCV conversion}
+\subsection{OpenCV conversion}
 
 The conversion module is implemented as a collection of routines in the \textbf{cv\_conversion.py} file made available on GitHub. The steps to the conversion process are the following:
 
@@ -157,7 +157,7 @@ where \textbf{PATH} is defined as follows:
 PATH = str(Path(os.path.dirname(os.path.abspath(__file__))).parents[0])
 \end{lstlisting}
 
-\subsubsection{OpenCV Detection}
+\subsection{OpenCV detection}
 
 The detection module, differently from the conversion one is implemented as a Class, called PersonDetection in the \textbf{human\_detection.py} file made available on GitHub. The steps to the detection process are the following:
 
@@ -306,7 +306,43 @@ def detection(self, req):
 
 \textbf{Publish detections \& Custom messages}
 
+The detections found on the RGB frame are processed and the details of the detection such as the centre point of the detection box and possibly many others such as the width, height, bottom-right and top-left corner is published over a \textbf{detections} topic whose content is later used by the pose estimation module.
 
+ROS makes it really easy to create custom messages to use for ROS services and/or topic publishing as in this case. In fact, it is just a matter of creating a msg folder at the root of the package directory in which all custom messages are created with a \textbf{.msg} extension and whose content is a set of fields which define the message. The fields can either be the built-in types already present by default in ROS or composite messages previously defined.
 
-\section{Pose Estimation}
-\section{Leg Detection Integration}
+TODO: Add Topic message screenshot.
+
+For the detection module two messages have been created, one called \textbf{Detection.msg} which holds all the information for one detection and whose fields and their type are:
+
+\begin{enumerate}
+  \item ID
+  \item int32 centre\_x
+  \item int32 centre\_y
+\end{enumerate}
+
+The other message created called \textbf{Detections.msg} serves as collection of all the detection messages, hence one of its fields is a custom array of Detection named array while the others are the header for timing and a number of detections counter used at a later stage by the pose estimation as shown below:
+
+\begin{enumerate}
+  \item Header header
+  \item int32 number\_of\_detections
+  \item Detection[] array
+\end{enumerate}
+
+The last step to make the messages available to the ROS package consists in adding the message references to the CMAKE builder so that they can be compiled in the workspace.
+
+TODO: Add CMAKE packaging screenshot.
+
+Implementation wise in the detection loop we create an instance of the \textbf{Detection} whose fields get populated with the detection details, which gets added to the array collection declared in the Detections file at the end of each iteration.
+
+\begin{lstlisting}
+	# Create Detection message
+	detection = Detection()
+    
+    # Populate message
+    detection.ID = self.number_of_detections
+    detection.centre_x = centre_ratio_point[0]
+    detection.centre_y = centre_ratio_point[1]
+    
+    # Add detection to the collection
+    self.detections.array.append(detection)
+\end{lstlisting}
