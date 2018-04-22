@@ -28,9 +28,9 @@ Efficiency was an important attribute to the project since the early planning st
 	\end{axis}
 \end{tikzpicture}
 
-From the histogram of the time breakdowns showed above, all of the modules do perform extremely efficiently. In particular, the conversion component takes on average 28.6 millisecond to finish the conversion step. Detecting people on the RGB frame, which is by far the most computationally expensive step, takes an average of only 101 milliseconds. Finally, the 3D pose estimation module was unsurprisingly the fastest one, as it completes the computation in only 1.6 milliseconds.
+From the histogram of the time breakdowns showed above, all of the modules do perform extremely efficiently. In particular, the conversion component takes on average \textbf{28.6 milliseconds} to finish the conversion step. Detecting people on the RGB frame, which is by far the most computationally expensive step, takes an average of only \textbf{101 milliseconds}. Finally, the 3D pose estimation module was unsurprisingly the fastest one, as it completes the computation in only \textbf{1.6 milliseconds}.
 
-The average computational time for the package to carry out the estimation process is of only 43.7 seconds. Therefore, the original objective of developing a ROS package usable in real-time can be considered met.
+The average computational time for the package to carry out the estimation process is of only \textbf{43.7 milliseconds}. Therefore, the original objective of developing a ROS package usable in real-time can be considered met.
 
 \section{Module Testing}
 
@@ -47,33 +47,29 @@ The detection's module tests were carried in two different environments, one bei
         \centering
         \includegraphics[width=.9\linewidth]{images/chapter6_clutter_light.png}
         \caption{Poor light condition and clutter.}
-        \label{1a}
 	\end{subfigure}
     \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[width=.9\linewidth]{images/chapter6_clutter_light_detection.png}
         \caption{Detection in clutter.}
-        \label{1b}
 	\end{subfigure}
     \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[width=.9\linewidth]{images/chapter6_clutter_light_detection_back.png}
         \caption{Detection in clutter (person showing back).}
-        \label{1c}
 	\end{subfigure}
     \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[width=.9\linewidth]{images/chapter6_clutter_standing.png}
         \caption{Multiple detections in clutter.}
-        \label{1d}
 	\end{subfigure}
 \end{figure}
 
-The outcomes of the detection module in poor lighting conditions are variable. In fact, Figure \ref{1a} shows a poor performance in the detection process as none of the three subjects in the picture were detected. However, this is not entirely to be attributed to the lighting conditions as the individuals are all or partially occluded in the clutter of the lab, which would make it difficult for a person as well by solely looking at the picture.
+The outcomes of the detection module in poor lighting conditions are variable. In fact, Figure (a) shows a poor performance in the detection process as none of the three subjects in the picture were detected. However, this is not entirely to be attributed to the lighting conditions as the individuals are all partially occluded in the clutter of the lab.
 
-Figure \ref{1b} and \ref{1c} do show an improvement in the detection outcome when one of the individuals is standing in the room. Both situations present a difficult situation, as in \ref{1b} the subject has his lower-body covered by a jacket and in \ref{1c} the same person is standing showing only his back and still partially covered which determines the low confidence(50\%).
+Figure (b) and (c) show an improvement in the detection outcome when one of the individuals is standing in the room. Both situations present a difficult situation, as in (b) the subject has his lower-body covered by a jacket and in (c) the same person is standing showing only his back and still partially covered which determines the low confidence in the detection, which is only 50\%.
 
-Figure \ref{1d} shows a robust detection result when the subjects are standing clearly even in poor lighting conditions and when not facing directly the camera. Moreover, the same figure shows how well the module handles detections at different scales by detecting a third person further down the room.
+Figure (d) shows a robust detection result when the subjects are standing clearly even in poor lighting conditions and when not facing directly the camera. Moreover, the same figure shows how well the module handles detections at different scales by detecting a third seated person further down the room.
 
 \subsubsection{Occlusions}
 
@@ -82,31 +78,27 @@ Figure \ref{1d} shows a robust detection result when the subjects are standing c
         \centering
         \includegraphics[width=.9\linewidth]{images/chapter6_occlusion_seated.png}
         \caption{Occlusion due to overlapping.}
-        \label{2a}
 	\end{subfigure}
     \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[width=.9\linewidth]{images/chapter6_occlusion_seated_good.png}
         \caption{Correct detection in occlusion.}
-        \label{2b}
 	\end{subfigure}
     \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[width=.9\linewidth]{images/chapter6_occlusion_table_back.png}
         \caption{Seated occlusion.}
-        \label{2c}
 	\end{subfigure}
     \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[width=.9\linewidth]{images/chapter6_occlusion_table_side.png}
         \caption{Sideway occlusion.}
-        \label{2d}
 	\end{subfigure}
 \end{figure}
 
-In Figure \ref{2a} the neural network fails at separating between the two subjects sitting to the right of the sofa, although the distinction is clearly visible. Figure \ref{2b} shows a good detection result when the occluding person moves to the right. Finally, we notice how in both \ref{2a} and \ref{2b} the two people sitting with their back towards the camera where detected even though only a part of their upper-back was showing, with an incredible 100\% confidence for one of the subjects in \ref{2b}.
+In Figure (a) the neural network fails at separating between the two subjects sitting to the right of the sofa, although the distinction is clearly visible. Figure (b) shows a good detection result when the occluding person moves to the right. Finally, we notice how in both (a) and (b) the two people sitting with their back towards the camera where detected even though only a part of their upper-back was showing, with an incredible 100\% confidence for one of the subjects in (b).
 
-In Figure \ref{2c} the module is able to detect four out of the five participants, in a situation where three of these are either occluded by the table or other subjects. In \ref{2d} the same scenario as \ref{2c} is presented but from a side perspective. In this occasion only two people are being detected as the remaining three subjects are completely or majority occluded by the people at the for-front.
+In Figure (c) the module is able to detect four out of the five participants, in a situation where three of these are either occluded by the table or other subjects. In (d) the same scenario as (c) is presented but from a side perspective. In this occasion only two people at the for-front are being detected as the remaining three subjects are completely or majority occluded by these.
 
 \subsubsection{Final Conclusion}
 
@@ -114,7 +106,7 @@ The module can be considered to be highly reliable given its correctness in dete
 
 \subsection{Pose Estimation}
 
-To test the distance and 3D pose computations three different scenarios were carried out in the robotics lab. For each scenario the correct 3D pose of each individual was noted down along using the point cloud data in RVIZ. The measurement is then used as a comparison to the estimated 3D pose of the package. The red markers in the RVIZ image below show the estimated position while the violet ones the actual one.
+To test the distance and 3D pose computations three different scenarios were carried out in the robotics lab. For each scenario the correct 3D pose of each individual was noted down along using the point cloud data in RVIZ. The measurement is then used as a comparison to the estimated 3D pose of the package. The red markers in the RVIZ images below show the estimated position while the violet ones the actual one.
 
 \subsubsection{Scenario1}
 
@@ -149,6 +141,8 @@ To test the distance and 3D pose computations three different scenarios were car
     \hline
   \end{tabular}
 \end{table}
+
+
 
 \subsubsection{Scenario2}
 
