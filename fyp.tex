@@ -1,29 +1,36 @@
-\documentclass[12pt,a4paper,twoside]{book}
+\documentclass[12pt,a4paper,oneside]{book}
 
 %include the configuration file for layout
 %Have a look in this file it has some useful commands defined
 \input{config.tex}
 
 \begin{document}
-%The prelude is everything upto the start of chapter 1
-\include{prelude}
+  % The prelude is everything up to the start of chapter 1. Including the
+  % cover page, deliverable page, summary, acknowledgements and table of
+  % contents.
+  \include{prelude}
 
-%include as many chapters as you have.
-%the chapters are in a directory called Chapters
-\include{./chapters/chapter1}
-\include{./chapters/chapter2}
-\include{./chapters/chapter3}
-\include{./chapters/chapter4}
-\include{./chapters/chapter5}
-\include{./chapters/chapter6}
-\include{./chapters/chapter7}
+  % This is to reset the counter of the page to number 1 again since the table
+  % of contents takes the first page for some reason. This is to ensure that
+  % main content is going to be started from page 1.
+  \setcounter{page}{1}
 
-%Adds References to the table of content
-%all you bibtex enteries go in the file called refs.bib
-\addcontentsline{toc}{chapter}{References}
-\bibliography{refs}. 
+  % Chapters to be included
+  \include{./chapters/chapter1}
+  \include{./chapters/chapter2}
+  \include{./chapters/chapter3}
+  \include{./chapters/chapter4}
+  \include{./chapters/chapter5}
+  \include{./chapters/chapter6}
+  \include{./chapters/chapter7}
+  \include{./chapters/chapter8}
+  \include{./chapters/chapter9}
 
-% There should only be 1 appendix for the intermediate report, for ethical issues.
-\include{appendix}
+  % References
+  \addcontentsline{toc}{chapter}{References}
+  \bibliography{refs}. 
+
+  % Appendices
+  \include{appendix}
 \end{document}
 

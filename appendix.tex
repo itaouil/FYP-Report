@@ -18,55 +18,57 @@ Robots, such as the one described in this project will become soon part of the e
 \chapter{Gantt Chart}
 
 \begin{landscape}
-	\newcounter{myWeekNum}
-    \stepcounter{myWeekNum}
+            \newcounter{myWeekNum}
+            \stepcounter{myWeekNum}
 
-    \newcommand{\myWeek}{
-        \themyWeekNum
-        \stepcounter{myWeekNum}
-        \ifnum\themyWeekNum=04
-            \setcounter{myWeekNum}{1}
-        \else\fi
-    }
+            \newcommand{\myWeek}{
+                \themyWeekNum
+                \stepcounter{myWeekNum}
+                \ifnum\themyWeekNum=04
+                    \setcounter{myWeekNum}{1}
+                \else\fi
+            }
 
-    \setcounter{myWeekNum}{04}
-        \ganttset{
-        calendar week text={\myWeek{}}
-    }
+            \setcounter{myWeekNum}{04}
+                \ganttset{
+                calendar week text={\myWeek{}}
+            }
 
-    \begin{ganttchart}[
-    	x unit=0.9mm,
-        hgrid style/.style={draw=black!5, line width=.75pt},
-        vgrid={*{6}{draw=none},dotted},
-        y unit title=.6cm,
-        y unit chart=.6cm,
-        time slot format=isodate,
-        time slot format/start date=2017-10-16]{2017-10-16}{2018-05-2}
-        \ganttset{bar height=.8}
-        \gantttitlecalendar{year, month=name, week} \\
-        	\ganttgroup{\textbf{Phase 1}}{2017-01-23}{2017-03-03}\\
-                \ganttbar{Literature \& Background research}{2017-10-16}{2017-12-07}\\
-                \ganttbar{Person Detection}{2018-01-29}{2018-02-09}\\
-                \ganttbar{Pose Estimation}{2018-02-12}{2018-02-23}\\
+            \begin{ganttchart}[
+                x unit=1.7mm,
+                hgrid style/.style={draw=black!5, line width=.75pt},
+                vgrid={*{6}{draw=none},dotted},
+                y unit title=.6cm,
+                y unit chart=.6cm,
+                time slot format=isodate,
+                time slot format/start date=2017-01-23]{2017-01-23}{2017-05-10}
+                \ganttset{bar height=.8}
+                \gantttitlecalendar{year, month=name, week} \\
+                    \ganttgroup{\textbf{Phase 1}}{2017-01-23}{2017-03-03}\\
+                        \ganttbar{Literature \& Background research}{2017-01-23}{2017-02-12}\\
+                        \ganttbar{Basic Give \& Take Algorithm}{2017-01-30}{2017-02-05}\\
+                        \ganttbar{Hand Pose Detection}{2017-02-06}{2017-02-23}\\
+                        \ganttbar{Simple Money Recognition}{2017-02-24}{2017-03-03}\\
+                        \ganttbar{Camera-Robot Calibration}{2017-03-03}{2017-03-09}\\
+                        \ganttmilestone{Basic cashier deployed on Baxter}{2017-03-09} \ganttnewline
 
-            \ganttgroup{\textbf{Phase 2}}{2017-03-09}{2017-04-09}\\
-                \ganttbar{Obstacle Avoidance using MoveIt!}{2017-03-09}{2017-03-16}\\
-                \ganttbar{Money Grasping \& Change handling}{2017-03-15}{2017-03-28}\\
-                \ganttbar{Refactoring \& improvements}{2017-03-29}{2017-04-08}\\
-                \ganttbar{Improved Money Recognition}{2017-04-08}{2017-04-09}\\
-                \ganttmilestone{Final Solution}{2017-04-09} \ganttnewline
+                    \ganttgroup{\textbf{Phase 2}}{2017-03-09}{2017-04-09}\\
+                        \ganttbar{Obstacle Avoidance using MoveIt!}{2017-03-09}{2017-03-16}\\
+                        \ganttbar{Money Grasping \& Change handling}{2017-03-15}{2017-03-28}\\
+                        \ganttbar{Refactoring \& improvements}{2017-03-29}{2017-04-08}\\
+                        \ganttbar{Improved Money Recognition}{2017-04-08}{2017-04-09}\\
+                        \ganttmilestone{Final Solution}{2017-04-09} \ganttnewline
 
-            \ganttgroup{\textbf{Phase 3}}{2017-04-10}{2017-05-05}\\
-                \ganttbar{Integration with last year's code}{2017-04-10}{2017-04-26}\\
-                \ganttbar{General fixes and speed improvements}{2017-04-27}{2017-05-01}\\
-                \ganttbar{Testing \& Evaluation}{2017-05-02}{2017-05-05}\\
-                \ganttmilestone{Final integrated Baxter \& Tested}{2017-05-05} \ganttnewline
+                    \ganttgroup{\textbf{Phase 3}}{2017-04-10}{2017-05-05}\\
+                        \ganttbar{Integration with last year's code}{2017-04-10}{2017-04-26}\\
+                        \ganttbar{General fixes and speed improvements}{2017-04-27}{2017-05-01}\\
+                        \ganttbar{Testing \& Evaluation}{2017-05-02}{2017-05-05}\\
+                        \ganttmilestone{Final integrated Baxter \& Tested}{2017-05-05} \ganttnewline
 
-            \ganttgroup{------------}{2017-10-16}{2017-05-02}\\
-                \ganttbar{Report Writing}{2017-10-16}{2018-05-02}\\
-                \ganttmilestone{Project Submission}{2018-05-02} \ganttnewline
-    \end{ganttchart}
-\end{landscape}
+                    \ganttgroup{------------}{2017-01-23}{2017-05-10}\\
+                        \ganttbar{Report Writing}{2017-01-23}{2017-05-09}\\
+                        \ganttmilestone{Project Submission}{2017-05-10} \ganttnewline
+            \end{ganttchart}
+        \end{landscape}
 
-% There should only be one appendix in the intermediate report, for ethical issues.
 \end{appendices}
