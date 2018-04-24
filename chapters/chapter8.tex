@@ -1,4 +1,34 @@
 \chapter{Conclusions}
 \label{chapter8}
 
-\section{TODO}
+\section{Limitations}
+
+The end-result reached is certainly not perfect and has multiple limitations. One of these is the estimation latency brought by the RGD-depth synchronisation, which ultimately causes the chain to wait multiple seconds before the next pose request is fired. This could limit the application usage of the package when high frame rates are required.
+
+Moreover, the ROS services used for the intra-module-communication, although offering an easy way to exchange messages between the various components, do limit the modularity of the package as all the module would need to be run even if only the RGB detection is the only interest due to the client-server chained process.
+
+Additionally, the conversion module does add to the project further computational costs, although these are contained. Nonetheless, solving the CvBridge compatibility issue with OpenCV 3.3 would allow the removal of an added step which could be easily integrated in the detection component.
+
+Finally, both the detection and pose module have a degree of error. In fact, the detection process would certainly not be expected to perform as good in detection people as a human eye, and ultimately it could fail because of different environmental variables present or because it is something that the network has never seen before in the training data. Similarly, the 3D pose is most of the times incorrect up to a certain degree of error.
+
+\section{Future Improvements}
+
+To solve the latency issue only one options is really available. This consists in decreasing the publishing frequency of the raw RGB image such that it is synchronised with the raw depth-image stream. Increasing the publication stream of the depth-image is not an option as the depth-computation made by the RGB-D sensor takes a bit of time.
+
+The intra-module-communication limitation, differently from the latency issues, has an effective solution, which to use just the publish-subscribe paradigm. Therefore getting rid of the synchronised chain process between the modules. Moreover, such approach would allow the user to only the desired module, although the pose component would still require the detection's publications.
+
+Compiling from source the latest OpenCV release and resolving the issues with the already present static binding would make the conversion module redundant in its task as the raw image conversion could be tackled using the update CvBridge bindings.
+
+Bringing further improvements to the detection module would consist in potentially re-training the module with more data. However, such an improvement is not really required given the already robust solution. However, to reduce the 3D error estimation a better calibration to the factory one can be carried out using available ROS packages, which could potentially improve the pixel projection and the 3D conversion result.
+
+\section{Personal Reflection}
+
+At the beginning of the academic I knew nothing about robotics and computer vision, and I didn't even know the latter existed as a topic. Fast forward a couple of months into the year, after taking my Robotics and Computer Vision module, and I was certain that this is the field I want to spend the next years of my career working on.
+
+
+
+
+
+
+
+

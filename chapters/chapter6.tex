@@ -140,9 +140,10 @@ To test the distance and 3D pose computations three different scenarios were car
     Estimated (Right) & 0.0623 & 0.192 & 0.00475 \\
     \hline
   \end{tabular}
+  \label{Scenario1 3D poses.}
 \end{table}
 
-
+The results shown in the above table as well as the markers in Figure (b) show a slight error in the 3D pose estimation, although the test subjects are standing close to the robot as shown in Figure (a). Nonetheless, the errors made are not huge and can still be considered usable for human-aware navigation tasks.
 
 \subsubsection{Scenario2}
 
@@ -150,8 +151,7 @@ To test the distance and 3D pose computations three different scenarios were car
     \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[width=8cm]{images/chapter6_scenario2.png}
-        \caption{Scenario1 frame.}
-        \label{2a}
+        \caption{Scenario2 frame.}
 	\end{subfigure}
     \begin{subfigure}{.5\textwidth}
         \centering
@@ -165,7 +165,7 @@ To test the distance and 3D pose computations three different scenarios were car
   \centering
   \begin{tabular}{ |p{4cm}|p{2cm}|p{2cm}|p{2cm}|  }
     \hline
-    \multicolumn{4}{|c|}{Scenario1: 3D Pose Data} \\
+    \multicolumn{4}{|c|}{Scenario2: 3D Pose Data} \\
     \hline
     & \textbf{X} & \textbf{Y} & \textbf{Z} \\
     \hline
@@ -177,7 +177,8 @@ To test the distance and 3D pose computations three different scenarios were car
     \hline
   \end{tabular}
 \end{table}
-\clearpage
+
+The situation in scenario2 is rather similar to scenario1, with the only difference that the subjects are at different levels and the robot's head is rotated with respect to the base to test the 3D transformation process. Again, there are remarkable errors in the estimation with a slight translation in all three coordinates as can be seen in table above.
 
 \subsubsection{Scenario3}
 
@@ -215,3 +216,5 @@ To test the distance and 3D pose computations three different scenarios were car
     \hline
   \end{tabular}
 \end{table}
+
+Scenario3 as shown in Figure (a) has three people visible to the camera sensor, whose estimated 3D position still comprehend a small error though still giving a correct estimation of where people are in the map.
