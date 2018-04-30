@@ -1,11 +1,11 @@
 \begin{appendices}
 \chapter{External Materials}
 
-The project made use of the following external libraries and tutorials to achieve the end result. Respective URLs were shortened for brevity but these can be found in fullest at the footnote of the page.
+The project made use of the following external libraries, tutorials and documentation to achieve the end result. The Respective URLs were shortened for brevity but these can be found in fullest at the footnote of the page.
 
 \begin{itemize}
   \item MobileNet-SSD model \url{https://bit.ly/2Hq8yeh}\footnote{\url{https://github.com/chuanqi305/MobileNet-SSD}}. The GitHub repository made available the serialised MobileNet-SSD model used for the detection task. 
-  \item Object detection with deep learning and OpenCV \url{https://bit.ly/2vCzTIx}\footnote{\url{https://www.pyimagesearch.com/2017/09/11/object-detection-with-deep-learning-and-opencv/}}. This tutorial provided the insights on how to use the serialised Caffe model and the initial scaffolding code, which was tweaked for the project's purpose.
+  \item Object detection with deep learning and OpenCV \url{https://bit.ly/2vCzTIx}\footnote{\url{https://www.pyimagesearch.com/2017/09/11/object-detection-with-deep-learning-and-opencv/}}. This tutorial provided the insights on how to use the serialised Caffe model and the initial scaffolding code, which was modified for the project's purpose.
   \item Baxter Cashier Robot wiki \url{https://bit.ly/2Hm6eZF}\footnote{\url{https://github.com/papallas/baxter_cashier/wiki}}. The repository's wiki offered a great insight on how to keep the project documented.
   \item Human-Robot Interaction for Cashier Robot \url{https://bit.ly/2vBRwID}\footnote{\url{https://minerva.leeds.ac.uk/bbcswebdav/orgs/SCH_Computing/FYProj/reports/1617/PAPALLAS17-FPR.pdf}}. Rafael Papallas' report was a source of inspiration during the report writing.
   \item Other libraries used include ROS\footnote{\url{http://www.ros.org/}} and OpenCV\footnote{\url{https://opencv.org/}}.
@@ -15,28 +15,21 @@ The project made use of the following external libraries and tutorials to achiev
 
 \textbf{Privacy Issues}
 
-One of the burning ethical issues is surely the privacy of the data that such autonomous system can easily collect within their environment and ultimately process or store locally or even in the cloud. This project does not store any data, which in this case might be pictures of people in the room.
+One of the burning ethical issues is surely the privacy of the data that autonomous system can easily collect within their environment and ultimately process locally or on the cloud. Therefore appropriate consent should be asked beforehand or make the whole estimation process clearer to the people around that data acquisition is in process. The current project's implementation stores people's pictures locally for the person detection process, hence appropriate image consent was asked and submitted as a deliverable. Both the image consent form and information are available in Appendix E and F. 
 
 \textbf{Unemployment and Wealth redistribution}
 
-Unemployment is another issue that sooner or later has to be tackled, as robots become more and more capable of doing predictable and unpredictable jobs there is a high risk of people loosing their jobs in different areas including care, construction and drivers. This project is not necessarily involved in any of these sectors, nonetheless, such a professional issues should be taken into consideration. 
+Unemployment is another issue that sooner or later has to be tackled, as robots become more capable of doing predictable and unpredictable tasks there is a high risk of people loosing their jobs in different areas including care, servicing and logistics. This project is not necessarily involved in any of these sectors, nonetheless, such a professional issue should be taken into consideration.
 
 Wealth redistribution is another pressing topic. How shall the income brought by these robots be managed, should a part of it be given back to the people that lost their jobs to the hands of these autonomous and efficient systems or not.
-
-\textbf{Human Robot Interaction}
-
-Robots, such as the one described in this project will become soon part of the environment we live in, not that we already don't live with robots (printers, smart-phones, Teslas, etc), but these intelligent systems will gain a certain human behavior in their movement, in their talk and in their ability to interact. This could possibly affect the way we understand interaction and change us in the worse. Just imagine a Robot which is able to change its talk cadence, movements and emotions depending on the person in front of it, wouldn't this affect us in the same way as well.
 
 \chapter{Access To Deliverables}
 
 This appendix lists the web links to some of the project's deliverables. URLs were shortened for brevity but the full ones can be found at the footnote of the page.
 
-This appendix lists the deliverables of the project and other useful links related to the project.
-
 \begin{enumerate}
-  \item Project's repository: \url{https://bit.ly/2JlMT7d}\footnote{\url{https://github.com/itaouil/HARN}}
-  \item Project's wiki: \url{https://bit.ly/2HjPwtX}\footnote{\url{https://github.com/itaouil/HARN/wiki}}
-  \item ROS link: 
+  \item Project's repository: \url{https://bit.ly/2r7ks6k}\footnote{\url{https://github.com/itaouil/human_position_estimation}}
+  \item Project's wiki: \url{https://bit.ly/2HAma6t}\footnote{\url{https://github.com/itaouil/human_position_estimation/wiki}}
 \end{enumerate}
 
 \chapter{Gantt Chart}
@@ -88,9 +81,8 @@ The Gantt chart showing the project progress can be found below. The tasks refle
 
                     \ganttgroup{\textbf{Phase 3}}{2018-03-17}{2018-04-30}\\
                         \ganttbar{Extend distance module to compute 3D pose}{2018-03-17}{2018-03-31}\\
-                        \ganttbar{Create visual markers for RVIZ}{2017-04-01}{2017-04-06}\\
-                        \ganttbar{Testing \& Evaluation}{2018-04-16}{2017-04-20}\\
-                        \ganttbar{ROS package release}{2017-04-23}{2017-04-27} \ganttnewline
+                        \ganttbar{Create visual markers for RVIZ}{2018-04-1}{2018-04-6}\\
+                        \ganttbar{Testing \& Evaluation}{2018-04-7}{2018-04-23}\\
 
                     \ganttgroup{------------}{2017-10-01}{2018-04-30}\\
                         \ganttbar{Report Writing}{2017-10-01}{2018-04-30}\\

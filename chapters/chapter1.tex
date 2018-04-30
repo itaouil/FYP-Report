@@ -3,27 +3,25 @@
 
 \section{Context}
 
-Rudimentary robots have been part of our lives since the early stage of the industrial revolution. Nowadays we interact with servicing robots almost every day, such as TVs, smartphones and automated security checking in the airports we travel through. This is an unstoppable trend and in the near future robots will increasingly become more present in human environments in a variety of areas, including assistance, grunt work and logistics.
+Rudimentary robots have been part of our lives since the early stage of the industrial revolution. Nowadays we interact with servicing robots almost every day, such as TVs, smartphones and self-checkout systems. This is an unstoppable trend, and in the future robots will increasingly become more autonomous and intelligent becoming heavily present in human environments in a variety of areas.
 
-Humans' interactions are defined by a set of precise protocols, in fact, we would not carelessly jump in front of a queue or invade someone else's space in a common environment without asking permission first. Therefore, for robots to be able to integrate in such an environment, and more importantly for humans to accept such an integration, will have to comply to some ethical, moral and social rules that govern our way of being humans.
+Humans' interactions are defined by a set of precise protocols, in fact, we would not jump in front of a queue or invade someone else's space without asking permission first. Therefore, for robots to be able to integrate in such surroundings, they will have to comply to some moral and social rules that govern our way of being humans.
 
-The project's aim is to contribute to the human-robot interaction domain by developing an open-source ROS package that can estimate people’s 3D pose in the environment. High level of confidence and robustness were reached using deep-learning techniques to detect people in the RGB frame and RGB-D sensory data were also used to compute detections' distances with the relative 3D pose in the map using several algorithms and techniques.
+This project's aim is to contribute to the human-robot interaction domain by developing an open-source ROS package that can estimate people's 3D position in the environment. High level of confidence and robustness were reached using deep-learning techniques to detect people in the RGB frame. RGB-D sensory data were also used to compute detections' distances with the relative 3D position in the map, using several algorithms and techniques.
 
-From the intermediate report submitted at the beginning of the project some changes have occurred in the scope and planning of the project, these are outlined in appendix F. Finally, in appendix C access to the project repository, documentation and ROS package link can be found.
+The project's deliverables are available in appendix C.
 
 \section{Project Aim}
 
-The aim of the project is to explore key-topics and main-ideas for human-aware navigation with focus on the perception side of things. The final goal is to develop an open-source ROS package software product able to estimate human position in a dynamic and non-sparse environment, using different algorithms and techniques.
-
-Moreover, being this an open-source project, modularity, ease of integration as well as computational efficiency are some of the most important feature.
+The aim of the project is to explore key topics and main ideas for human-aware perception, with the final goal of developing an open-source perception system able to compute the 3D position of people in a dynamic and non-sparse environment. Where dynamic means the continuous movement of people and by non-sparse is meant cluttered areas. Moreover, being this an open-source project, modularity, ease of integration as well as computational efficiency are some of the most important features.
 
 \section{Problem Domain}
 
-There are three tasks to be tackled within the project. Detecting human presence through RGB sensory data, compute the human-robot distance and finally retrieve the person's 3D pose (x, y and z) in the map.
+There are three tasks to be tackled within the project. Detecting human presence through RGB sensory data, compute the person-robot distance and finally retrieve the person's 3D position in the map.
 
-Each of the tasks presented above needs to comply to certain characteristics. In fact, the person-detection module needs to be computationally efficient to be able to run in real-time, while being embedded in power constrained devices. Robustness and accuracy in the detection are also important.
+Each of the tasks presented above needs to comply to certain conditions. In fact, the person detection module needs to be computationally efficient to be able to run in real-time in power constrained devices. Robustness and accuracy in the detection are also important.
 
-The human-robot distance computation needs to handle noise coming from the real world while still being reliable, as the 3D pose computation heavily relies on a good distance estimation. 
+The person-robot distance computation needs to handle noise coming from the real world, while still being reliable, as the 3D position retrieval heavily relies on a good distance estimation. 
 
 \section{Project Objectives}
 
@@ -33,8 +31,8 @@ The following objectives for the project are defined:
   \item Obtain a level of proficiency in using the ROS\footnote{Robot Operating
 System} middleware and its tools.
 	\item Obtain a level of proficiency in using exteroceptive sensors such as RGB-D and laser-scans.
-  \item Explore available person detection computer vision algorithms and the state-of-the-art techniques for the task.
-  \item Explore available distance estimation techniques using the available sensors.
+  \item Gain an understanding of the available person detection computer vision algorithms and the state-of-the-art techniques for the task.
+  \item Gain an understanding in the available distance estimation techniques using the available sensors.
 \end{enumerate}
 
 \section{Project Deliverables}
@@ -42,9 +40,9 @@ System} middleware and its tools.
 The following deliverables are to be expected:
 
 \begin{enumerate}
-  \item Develop a person detection module using the robot's built-in RGB sensor.
-  \item Develop a person-robot depth module to estimate the distance between the robot and the detection/s using the robot's built-in RGB-D sensor or other computer vision techniques.
-  \item Publish the module's computations over separate topics for an easy subscription to the data.
-  \item Create visual markers on RVIZ to show people's pose in the map.
-  \item Release the package on ROS.
+  \item Develop a person detection module using the robot's built-in camera sensor.
+  \item Develop a person-robot distance module in order to estimate the stretch between the robot and the detections, using the robot's built-in RGB-D sensor or other computer vision techniques.
+  \item Extend the distance module with a 3D position retrieval phase using the distance computation.
+  \item Project's source code and relative documentation.
+  \item Report analysis.
 \end{enumerate}

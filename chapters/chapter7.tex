@@ -1,33 +1,31 @@
 \chapter{Planning \& Project Management}
 \label{chapter7}
 
-In this chapter the planning and project management techniques used throughout the project in order to mitigate the inherent risk of the experimentation are discussed, with a focus on how the project was broke down into its phases, the source version control and other project management techniques.
-
-The Gantt chart with the project's weekly breakdowns is available in Appendix D.
+In this chapter the planning and project management techniques used throughout the project in order to mitigate the inherent risk of the experimentation are discussed, with a focus on how the project was broke down into its phases, the source version control and other project management techniques. The Gantt chart with the project's weekly breakdowns is available in Appendix D.
 
 \section{Change of aim}
 
-The nature of the project and its experimentation approach, the intermediate report feedback received by Dr. Mehmet Dogar, the project's assessor, were such that the original aim of the project was changed in agreement with Dr. Matteo Leonetti, the project's supervisor, so as not to incorporate the original human-robot behavioural aspect that should have seen the robot not only detect the human pose in the environment, but join these whenever there was on-going discussion. However, as the change happened at a relatively early development stage, and the previous background research done was still relative to the re-shaped project not much re-planning was necessary for the ultimate fulfillment of the task.
+The original aim of the project consisted in developing a software solution that would see the robot join people in ongoing discussions. Therefore both a perception and navigation component were present. However, the nature of the project and its experimentation approach, along with the intermediate report feedback and various discussions with the project's supervisor, where such that the former was changed so as not to incorporate the original human-robot behavioural aspect any more. Change of plans are normal in such projects and could possibly lead to a complete re-evaluation of the whole scope of the task including the previous background research. Although such re-evaluation happened to a certain extent, the majority of the research carried out was still valid for the revised aim, including the various techniques to perform person detection and distance estimation. Finally, the development process was not influenced by the change as this happened relatively early into the development stage.
 
 \section{Planning}
 
-The project development followed an agile methodology, where four main phases were identified for a successful accomplishment.
+As can be seen from the Gantt chart presented in Appendix D, the project was broken into three phases. The first phase consisted in the background research to explore the various ideas related to the project's aim and an overlapping first basic implementation of the detection module. The remaining stages consisted in developing a distance module to compute the stretch between the robot and the detection, and to ultimately extend the module with a 3D pose computation component to find the map location of the detection.
 
-The first phase consisted in developing the human detection piece which was the essential part of the project, as without a correct and precise recognition the remaining modules would serve nothing.
+\subsection{Methodology}
 
-The second phase consisted in obtaining a correct and precise human-robot distance, which would allow a correct pose estimation later on.
+For the software development stage a phase-driven agile type methodology was preferred over the classical waterfall approach for a couple of reasons. First and foremost the waterfall methodology is a linear one, meaning that the next stage of the development will not start as soon as the current one finishes in its entirety including testing and evaluation, thereby lacking flexibility in the development approach. Moreover, the waterfall method requires a good requirements analysis, which is not the case in this project given the exploratory nature.
 
-The third phase was about finding the 3D world position of the detection in the world, where by world in this case is meant the map of the environment.
+Therefore the choice to use the iterative agile approach, where rapid deliveries of the components are emphasised. These functional backlog items are developed within sprints, which are time bounded period of times where the component needs to be completed. The agile approach, moreover, does not constraint the development of the functional components, allowing to work on several backlog items at the same time, something that happened few times during the project, when refinements were brought to previously developed features while developing the latest ones.
 
-% The last and fourth module wasn't really development, but rather integration, as an off-the-shelf ROS package is used to give the user a possible esteem for detections outside of the 8 metres RGB-D range.
+\section{Project Management}
 
-\section{GitHub}
+\subsection{GitHub}
 
-The project's code is hosted entirely on GitHub as a public repository\footnote{ \url{https://github.com/itaouil/HARN}}, which makes it easily accessible to everyone who wants to contribute to it. Moreover, GitHub offers other project management techniques that have been used throughout the development and which are presented below.
+The project's code is hosted entirely on GitHub as a public repository\footnote{ \url{https://github.com/itaouil/human_position_estimation}}, which makes it easily accessible to everyone who wants to contribute to it or just make use of it. Moreover, GitHub offers other project management techniques that have been used throughout the development and which are presented below.
 
 \subsection{Branching}
 
-Git branching was an important aspect of the development, in order to separate the different modules implementation and the major features within these. This enabled a safer experimenting process where already working features in the master branch were not affected by the on-going development of others. 
+Git branching was an important aspect of the development, in order to separate the different phases in the development of the modules and the respective features. The branching approach enabled an overall safer experimenting process where already working features in the master branch were not affected by the ongoing development of others. 
 
 Moreover, the approach taken in the development consisted of merging to master after every feature completion, followed by the deletion of the latter's local and remote branch, hence, none of the development branches are still available on GitHub anymore, nonetheless, 4 branches have been used during the implementation part of the project for the following features:
 
@@ -40,14 +38,14 @@ Moreover, the approach taken in the development consisted of merging to master a
 
 \subsection{Milestones \& Issues}
 
-GitHub issues have been used to keep track of uncompleted tasks as well as bugs encountered during the development phase. The standard GitHub issues labels have used to indicate the nature of the issue. Moreover, two Milestones have been identified, one for the marked presentation given before the easter break and one for the final submission deadline. Issues have been assigned accordingly to their respective Milestone.
+GitHub issues were also used to keep track of uncompleted tasks as well as bugs encountered during the different development phases. The standard GitHub issues labels have used to indicate the nature of the issue. Moreover, two Milestones have been identified, one for the marked presentation given before the Easter break and one for the final submission deadline. Issues have been assigned accordingly to their respective Milestone.
 
 \subsection{License}
 
-As previously stated the ROS package developed will be made available to the open-source ROS community for them to use and improve. Hence the need to make the repository publicly available, thereby granting permission to everyone to use and modify the software, with the final aim of bringing further improvements to it.
+As previously stated the developed package developed will be made available to the open-source robotics community. Hence the need to make the repository publicly accessible, thereby granting permission to everyone to use and modify the software product, with the final aim of bringing further improvements to it.
 
-Therefore, the repository, source code and all contents to it was licensed under the \textbf{General Public License v3.0}.
+Therefore, all the repository content, including source code and documentation was licensed under the \textbf{General Public License v3.0}.
 
 \subsection{Wiki}
 
-Documentation is really important for open-source projects to document the correct installation process, dependencies, usage and possible encountered issues. Therefore a detailed wiki is kept within GitHub which would serve as a reference for future usage. 
+Documentation is really important for open-source projects to document the correct installation process, dependencies, usage and possible encountered issues. Therefore a detailed wiki was kept within GitHub which would serve as a reference for future usage.
